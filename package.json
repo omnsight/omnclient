@@ -1,0 +1,22 @@
+{
+  "name": "omnclient",
+  "version": "1.0.0",
+  "description": "TypeScript client generator for omniscent services",
+  "main": "index.js",
+  "scripts": {
+    "build": "node scripts/generate-clients.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "swagger-typescript-api": "^12.0.4",
+    "node-fetch": "^3.3.2",
+    "adm-zip": "^0.5.10",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
