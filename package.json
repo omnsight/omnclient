@@ -1,22 +1,31 @@
 {
-  "name": "omnclient",
+  "name": "@omnsight/clients",
   "version": "1.0.0",
-  "description": "TypeScript client generator for omniscent services",
-  "main": "index.js",
+  "description": "TypeScript clients for Omniscent services",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "build": "node scripts/generate-clients.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepack": "npm run build"
   },
   "dependencies": {
-    "swagger-typescript-api": "^12.0.4",
-    "node-fetch": "^3.3.2",
-    "adm-zip": "^0.5.10",
     "axios": "^1.6.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0"
+    "@types/node": "^20.10.0",
+    "swagger-typescript-api": "^12.0.4",
+    "node-fetch": "^3.3.2",
+    "adm-zip": "^0.5.10"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "files": [
+    "src/**/*"
+  ],
+  "keywords": [
+    "omnsight",
+    "api",
+    "client",
+    "typescript"
+  ],
+  "author": "Omnsight",
+  "license": "Apache-2.0"
 }

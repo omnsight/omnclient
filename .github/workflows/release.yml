@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - 'main'
+  workflow_dispatch:
 
 jobs:
-  tag:
+  release:
     name: Create New Tag
     runs-on: ubuntu-latest
 
@@ -25,3 +26,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_PREFIX: v
           PRERELEASE: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build clients
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

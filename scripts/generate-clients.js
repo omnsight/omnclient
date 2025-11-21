@@ -4,7 +4,7 @@ const { execSync } = require('child_process');
 const https = require('https');
 
 // 创建输出目录
-const OUTPUT_DIR = path.join(__dirname, '..', 'generated');
+const OUTPUT_DIR = path.join(__dirname, '..', 'src');
 if (!fs.existsSync(OUTPUT_DIR)) {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 }
