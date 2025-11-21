@@ -21,13 +21,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.75.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_PREFIX: v
-          PRERELEASE: true
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -39,3 +32,10 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm publish
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_PREFIX: v
+          PRERELEASE: true
