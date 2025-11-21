@@ -1,0 +1,35 @@
+name: Generate TypeScript Clients
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  generate-clients:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate clients
+        run: npm run build
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "auto: chore: 更新 TypeScript 客户端"
+          commit_options: '--no-verify'
+          file_pattern: 'generated/'
+          branch: ${{ github.ref_name }}
