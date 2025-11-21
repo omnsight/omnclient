@@ -1,6 +1,6 @@
 {
   "name": "@omnsight/clients",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript clients for Omniscent services",
   "main": "src/index.ts",
   "types": "src/index.ts",
