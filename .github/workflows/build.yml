@@ -32,6 +32,8 @@ jobs:
 
       - name: Generate clients
         run: |
+          git config --global user.email "ci-build@omni.com"
+          git config --global user.name "ci build"
           npm run build
           npm version patch
 

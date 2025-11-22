@@ -1,6 +1,6 @@
 {
   "name": "@omnsight/clients",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "description": "TypeScript clients for Omniscent services",
   "repository": {
     "type": "git",
