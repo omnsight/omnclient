@@ -42,5 +42,5 @@ jobs:
         with:
           commit_message: "auto: chore: 更新 TypeScript 客户端"
           commit_options: '--no-verify'
-          file_pattern: 'src/'
+          file_pattern: 'src/ package*.json'
           branch: ${{ github.ref_name }}
