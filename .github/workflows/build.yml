@@ -27,7 +27,9 @@ jobs:
         run: npm ci
 
       - name: Generate clients
-        run: npm run build
+        run: |
+          npm run build
+          npm version patch
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
