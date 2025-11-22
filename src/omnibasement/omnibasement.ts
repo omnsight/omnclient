@@ -67,7 +67,7 @@ export interface V1Event {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  visible?: boolean;
+  sensitivity?: V1Sensitivity;
   /** Main Data */
   location?: V1LocationData;
   title?: string;
@@ -128,7 +128,7 @@ export interface V1Organization {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  visible?: boolean;
+  sensitivity?: V1Sensitivity;
   /** Main Data */
   name?: string;
   type?: string;
@@ -155,7 +155,7 @@ export interface V1Person {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  visible?: boolean;
+  sensitivity?: V1Sensitivity;
   /** Main Data */
   name?: string;
   role?: string;
@@ -186,6 +186,7 @@ export interface V1Relation {
   to?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
+  sensitivity?: V1Sensitivity;
   /** Main Data */
   name?: string;
   /** @format int32 */
@@ -211,6 +212,14 @@ export interface V1RelationValue {
   boolValue?: boolean;
 }
 
+/** @default "SENSITIVITY_PUBLIC_UNSPECIFIED" */
+export enum V1Sensitivity {
+  SENSITIVITY_PUBLIC_UNSPECIFIED = "SENSITIVITY_PUBLIC_UNSPECIFIED",
+  SENSITIVITY_PRIVILEGED = "SENSITIVITY_PRIVILEGED",
+  SENSITIVITY_COMMERCIAL = "SENSITIVITY_COMMERCIAL",
+  SENSITIVITY_CONFIDENTIAL = "SENSITIVITY_CONFIDENTIAL",
+}
+
 export interface V1Source {
   /**
    * Common data
@@ -221,7 +230,7 @@ export interface V1Source {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  visible?: boolean;
+  sensitivity?: V1Sensitivity;
   /** Main Data */
   name?: string;
   url?: string;
@@ -275,7 +284,7 @@ export interface V1Website {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  visible?: boolean;
+  sensitivity?: V1Sensitivity;
   /** Main Data */
   url?: string;
   domain?: string;
