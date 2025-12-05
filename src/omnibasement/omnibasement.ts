@@ -231,6 +231,7 @@ export interface V1Source {
   reliability?: number;
   /** @format int32 */
   monitoring?: number;
+  title?: string;
   /**
    * Time data
    * @format int64
