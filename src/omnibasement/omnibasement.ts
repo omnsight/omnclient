@@ -643,11 +643,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags RelationshipService
      * @name RelationshipServiceDeleteRelationship
-     * @request DELETE:/v1/relationships/{id}
+     * @request DELETE:/v1/relationships/{collection}/{key}
      */
-    relationshipServiceDeleteRelationship: (id: string, params: RequestParams = {}) =>
+    relationshipServiceDeleteRelationship: (collection: string, key: string, params: RequestParams = {}) =>
       this.request<V1DeleteRelationshipResponse, RpcStatus>({
-        path: `/v1/relationships/${id}`,
+        path: `/v1/relationships/${collection}/${key}`,
         method: "DELETE",
         format: "json",
         ...params,
@@ -658,11 +658,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags RelationshipService
      * @name RelationshipServiceUpdateRelationship
-     * @request PUT:/v1/relationships/{id}
+     * @request PUT:/v1/relationships/{collection}/{key}
      */
-    relationshipServiceUpdateRelationship: (id: string, relationship: V1Relation, params: RequestParams = {}) =>
+    relationshipServiceUpdateRelationship: (
+      collection: string,
+      key: string,
+      relationship: V1Relation,
+      params: RequestParams = {},
+    ) =>
       this.request<V1UpdateRelationshipResponse, RpcStatus>({
-        path: `/v1/relationships/${id}`,
+        path: `/v1/relationships/${collection}/${key}`,
         method: "PUT",
         body: relationship,
         format: "json",
