@@ -131,6 +131,7 @@ export interface V1RelatedEntity {
   person?: V1Person;
   organization?: V1Organization;
   website?: V1Website;
+  event?: V1Event;
 }
 
 export interface V1Relation {
