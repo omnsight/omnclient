@@ -28,8 +28,10 @@ npm install @omniscent/clients
 ### 手动生成客户端
 
 ```bash
+npm login
 npm run generate
 npm run build
+npm publish
 ```
 
 该命令会:
