@@ -14,11 +14,44 @@ export interface ProtobufAny {
   [key: string]: any;
 }
 
+/**
+ * `NullValue` is a singleton enumeration to represent the null value for the
+ * `Value` type union.
+ *
+ * The JSON representation for `NullValue` is JSON `null`.
+ *
+ *  - NULL_VALUE: Null value.
+ * @default "NULL_VALUE"
+ */
+export enum ProtobufNullValue {
+  NULL_VALUE = "NULL_VALUE",
+}
+
 export interface RpcStatus {
   /** @format int32 */
   code?: number;
   message?: string;
   details?: ProtobufAny[];
+}
+
+export interface V1CreateEntityResponse {
+  entity?: V1Entity;
+}
+
+export interface V1CreateRelationshipResponse {
+  relationship?: V1Relation;
+}
+
+export type V1DeleteEntityResponse = object;
+
+export type V1DeleteRelationshipResponse = object;
+
+export interface V1Entity {
+  source?: V1Source;
+  person?: V1Person;
+  organization?: V1Organization;
+  website?: V1Website;
+  event?: V1Event;
 }
 
 export interface V1Event {
@@ -45,15 +78,16 @@ export interface V1Event {
   updatedAt?: string;
   /** Additional */
   tags?: string[];
+  attributes?: object;
 }
 
-export interface V1GetEventRelatedEntitiesResponse {
-  entities?: V1RelatedEntity[];
+export interface V1GetEntityResponse {
+  entity?: V1Entity;
 }
 
-export interface V1GetEventsResponse {
+export interface V1ListEntitiesFromEventResponse {
+  entities?: V1Entity[];
   relations?: V1Relation[];
-  events?: V1Event[];
 }
 
 export interface V1LocationData {
@@ -96,6 +130,7 @@ export interface V1Organization {
   lastVisited?: string;
   /** Additional */
   tags?: string[];
+  attributes?: object;
 }
 
 export interface V1Person {
@@ -123,15 +158,7 @@ export interface V1Person {
   /** Additional */
   tags?: string[];
   aliases?: string[];
-}
-
-export interface V1RelatedEntity {
-  relation?: V1Relation;
-  source?: V1Source;
-  person?: V1Person;
-  organization?: V1Organization;
-  website?: V1Website;
-  event?: V1Event;
+  attributes?: object;
 }
 
 export interface V1Relation {
@@ -153,25 +180,15 @@ export interface V1Relation {
   name?: string;
   /** @format int32 */
   confidence?: number;
-  attributes?: Record<string, V1RelationValue>;
   /**
-   * Time data
+   * Time Data
    * @format int64
    */
   createdAt?: string;
   /** @format int64 */
   updatedAt?: string;
-}
-
-export interface V1RelationValue {
-  stringValue?: string;
-  /** @format int64 */
-  intValue?: string;
-  /** @format double */
-  doubleValue?: number;
-  /** @format float */
-  floatValue?: number;
-  boolValue?: boolean;
+  /** Additional Data */
+  attributes?: object;
 }
 
 export interface V1Source {
@@ -203,6 +220,15 @@ export interface V1Source {
   updatedAt?: string;
   /** Additional */
   tags?: string[];
+  attributes?: object;
+}
+
+export interface V1UpdateEntityResponse {
+  entity?: V1Entity;
+}
+
+export interface V1UpdateRelationshipResponse {
+  relationship?: V1Relation;
 }
 
 export interface V1Website {
@@ -232,6 +258,7 @@ export interface V1Website {
   lastVisited?: string;
   /** Additional */
   tags?: string[];
+  attributes?: object;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios";
@@ -365,33 +392,38 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title Geovision API
+ * @title Data API
  * @version 1.0.0
  * @license Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html)
  * @contact Omni Team
  *
- * The Geovision API handles data for geovision uses.
+ * The OSINT data API handles data for OSINT operations.
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   v1 = {
     /**
      * No description
      *
-     * @tags GeoService
-     * @name GeoServiceGetEvents
-     * @request GET:/v1/events
+     * @tags EntityService
+     * @name EntityServiceListEntitiesFromEvent
+     * @request GET:/v1/entities/event
      */
-    geoServiceGetEvents: (
+    entityServiceListEntitiesFromEvent: (
       query?: {
+        startNode?: string;
         /** @format int64 */
         startTime?: string;
         /** @format int64 */
         endTime?: string;
+        countryCode?: string;
+        tag?: string;
+        /** @format int32 */
+        depth?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<V1GetEventsResponse, RpcStatus>({
-        path: `/v1/events`,
+      this.request<V1ListEntitiesFromEventResponse, RpcStatus>({
+        path: `/v1/entities/event`,
         method: "GET",
         query: query,
         format: "json",
@@ -401,14 +433,113 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags GeoService
-     * @name GeoServiceGetEventRelatedEntities
-     * @request GET:/v1/events/{key}/related-entities
+     * @tags EntityService
+     * @name EntityServiceCreateEntity
+     * @request POST:/v1/entities/{entityType}
      */
-    geoServiceGetEventRelatedEntities: (key: string, params: RequestParams = {}) =>
-      this.request<V1GetEventRelatedEntitiesResponse, RpcStatus>({
-        path: `/v1/events/${key}/related-entities`,
+    entityServiceCreateEntity: (entityType: string, entity: V1Entity, params: RequestParams = {}) =>
+      this.request<V1CreateEntityResponse, RpcStatus>({
+        path: `/v1/entities/${entityType}`,
+        method: "POST",
+        body: entity,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags EntityService
+     * @name EntityServiceGetEntity
+     * @request GET:/v1/entities/{entityType}/{key}
+     */
+    entityServiceGetEntity: (entityType: string, key: string, params: RequestParams = {}) =>
+      this.request<V1GetEntityResponse, RpcStatus>({
+        path: `/v1/entities/${entityType}/${key}`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags EntityService
+     * @name EntityServiceDeleteEntity
+     * @request DELETE:/v1/entities/{entityType}/{key}
+     */
+    entityServiceDeleteEntity: (entityType: string, key: string, params: RequestParams = {}) =>
+      this.request<V1DeleteEntityResponse, RpcStatus>({
+        path: `/v1/entities/${entityType}/${key}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags EntityService
+     * @name EntityServiceUpdateEntity
+     * @request PUT:/v1/entities/{entityType}/{key}
+     */
+    entityServiceUpdateEntity: (entityType: string, key: string, entity: V1Entity, params: RequestParams = {}) =>
+      this.request<V1UpdateEntityResponse, RpcStatus>({
+        path: `/v1/entities/${entityType}/${key}`,
+        method: "PUT",
+        body: entity,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags RelationshipService
+     * @name RelationshipServiceCreateRelationship
+     * @request POST:/v1/relationships
+     */
+    relationshipServiceCreateRelationship: (relationship: V1Relation, params: RequestParams = {}) =>
+      this.request<V1CreateRelationshipResponse, RpcStatus>({
+        path: `/v1/relationships`,
+        method: "POST",
+        body: relationship,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags RelationshipService
+     * @name RelationshipServiceDeleteRelationship
+     * @request DELETE:/v1/relationships/{collection}/{key}
+     */
+    relationshipServiceDeleteRelationship: (collection: string, key: string, params: RequestParams = {}) =>
+      this.request<V1DeleteRelationshipResponse, RpcStatus>({
+        path: `/v1/relationships/${collection}/${key}`,
+        method: "DELETE",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags RelationshipService
+     * @name RelationshipServiceUpdateRelationship
+     * @request PUT:/v1/relationships/{collection}/{key}
+     */
+    relationshipServiceUpdateRelationship: (
+      collection: string,
+      key: string,
+      relationship: V1Relation,
+      params: RequestParams = {},
+    ) =>
+      this.request<V1UpdateRelationshipResponse, RpcStatus>({
+        path: `/v1/relationships/${collection}/${key}`,
+        method: "PUT",
+        body: relationship,
         format: "json",
         ...params,
       }),
