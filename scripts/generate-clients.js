@@ -16,12 +16,8 @@ const SERVICES = [
     url: 'https://raw.githubusercontent.com/omnsight/omniauth/main/doc/api.swagger.json'
   },
   {
-    name: 'geovision',
-    url: 'https://raw.githubusercontent.com/omnsight/geovision/main/doc/api.swagger.json'
-  },
-  {
-    name: 'omnibasement',
-    url: 'https://raw.githubusercontent.com/omnsight/omnibasement/main/doc/api.swagger.json'
+    name: 'omndapi',
+    url: 'https://raw.githubusercontent.com/omnsight/omndapi/main/doc/api.swagger.json'
   }
 ];
 

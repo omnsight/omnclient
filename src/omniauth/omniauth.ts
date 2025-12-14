@@ -9,11 +9,27 @@
  * ---------------------------------------------------------------
  */
 
-export interface PublicUserData {
+export interface ProtobufAny {
+  "@type"?: string;
+  [key: string]: any;
+}
+
+export interface RpcStatus {
+  /** @format int32 */
+  code?: number;
+  message?: string;
+  details?: ProtobufAny[];
+}
+
+export interface V1GetUserResponse {
+  user?: V1PublicUser;
+}
+
+export interface V1PublicUser {
   id?: string;
   username?: string;
-  firstName?: string;
-  lastName?: string;
+  firstname?: string;
+  lastname?: string;
   email?: string;
 }
 
@@ -148,31 +164,25 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title User API
+ * @title Auth API
  * @version 1.0.0
  * @license Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.html)
  * @contact Omni Team
  *
- * The User API handles user profile management.
+ * The Auth API handles authentication for the OmniAuth service.
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  users = {
+  v1 = {
     /**
-     * @description Retrieve public user data by user ID
+     * No description
      *
-     * @tags UserService
-     * @name GetUserById
-     * @summary Get user by ID
-     * @request GET:/users/{id}
+     * @tags AuthService
+     * @name AuthServiceGetUser
+     * @request GET:/v1/users/{userId}
      */
-    getUserById: (id: string, params: RequestParams = {}) =>
-      this.request<
-        PublicUserData,
-        {
-          error?: string;
-        }
-      >({
-        path: `/users/${id}`,
+    authServiceGetUser: (userId: string, params: RequestParams = {}) =>
+      this.request<V1GetUserResponse, RpcStatus>({
+        path: `/v1/users/${userId}`,
         method: "GET",
         format: "json",
         ...params,

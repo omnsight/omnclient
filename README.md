@@ -3,16 +3,14 @@
 这是为以下 Omniscent 服务自动生成的 TypeScript 客户端包：
 
 1. [Omniauth](https://github.com/omnsight/omniauth)
-2. [Geovision](https://github.com/omnsight/geovision)
-3. [Omnibasement](https://github.com/omnsight/omnibasement)
+2. [Omndapi](https://github.com/omnsight/omndapi)
 
 ## 目录结构
 
 ```
 /src
-  /omniauth         # Omniauth 服务的 TypeScript 客户端
-  /geovision        # Geovision 服务的 TypeScript 客户端
-  /omnibasement     # Omnibasement 服务的 TypeScript 客户端
+  /omniauth       # Omniauth 服务的 TypeScript 客户端
+  /omndapi        # Omndapi 服务的 TypeScript 客户端
 /scripts
   generate-clients.js  # 生成客户端的脚本
 ```
