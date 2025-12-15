@@ -64,8 +64,11 @@ export interface V1Event {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  roles?: string[];
+  owner?: string;
+  read?: string[];
+  write?: string[];
   /** Main Data */
+  type?: string;
   location?: V1LocationData;
   title?: string;
   description?: string;
@@ -115,10 +118,12 @@ export interface V1Organization {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  roles?: string[];
+  owner?: string;
+  read?: string[];
+  write?: string[];
   /** Main Data */
-  name?: string;
   type?: string;
+  name?: string;
   /**
    * Time data
    * @format int64
@@ -143,10 +148,12 @@ export interface V1Person {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  roles?: string[];
+  owner?: string;
+  read?: string[];
+  write?: string[];
   /** Main Data */
-  name?: string;
   role?: string;
+  name?: string;
   nationality?: string;
   /**
    * Time data
@@ -175,7 +182,9 @@ export interface V1Relation {
   to?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  roles?: string[];
+  owner?: string;
+  read?: string[];
+  write?: string[];
   /** Main Data */
   name?: string;
   /** @format int32 */
@@ -201,16 +210,17 @@ export interface V1Source {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  roles?: string[];
+  owner?: string;
+  read?: string[];
+  write?: string[];
   /** Main Data */
-  name?: string;
+  type?: string;
   url?: string;
-  rootUrl?: string;
+  name?: string;
+  title?: string;
+  description?: string;
   /** @format int32 */
   reliability?: number;
-  /** @format int32 */
-  monitoring?: number;
-  title?: string;
   /**
    * Time data
    * @format int64
@@ -241,10 +251,11 @@ export interface V1Website {
   key?: string;
   /** @gotags: json:"_rev,omitempty" */
   rev?: string;
-  roles?: string[];
+  owner?: string;
+  read?: string[];
+  write?: string[];
   /** Main Data */
   url?: string;
-  domain?: string;
   title?: string;
   description?: string;
   /**
