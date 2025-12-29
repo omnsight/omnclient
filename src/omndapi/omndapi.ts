@@ -189,6 +189,7 @@ export interface V1Relation {
   name?: string;
   /** @format int32 */
   confidence?: number;
+  label?: string;
   /**
    * Time Data
    * @format int64
